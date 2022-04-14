@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\NewsApiController;
 use App\Http\Controllers\PageWebController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/news', [NewsApiController::class, 'index']);
-Route::get('/news/{slug}', [NewsApiController::class, 'show']);
 Route::get('/{slug}', PageWebController::class);
-
