@@ -20,6 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get('/news', [NewsApiController::class, 'index']);
-
-Route::get('/{slug}', PageWebController::class);
 Route::get('/news/{slug}', [NewsApiController::class, 'show']);
+Route::get('/{slug}', PageWebController::class);
+
