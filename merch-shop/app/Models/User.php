@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -21,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'github_id',
+        'github_logged_in_at',
+        'github_registered_at'
     ];
 
     /**
@@ -31,6 +35,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'guthub_id'
     ];
 
     /**
@@ -40,5 +45,17 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'github_logged_in_at'=> 'datetime',
+        'github_registered_at'=> 'datetime',
     ];
+
+    public static function createFromRequest(array $requestData):self
+    {
+        $user = new self();
+        $user->name = $requestData['name'];
+        $user->email = $requestData['email'];
+        $user->password = Hash::make($requestData['password']);
+        $user->save();
+        return $user;
+    }
 }

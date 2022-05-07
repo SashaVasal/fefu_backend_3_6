@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class BaseRegisterFormRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class BaseRegisterFormRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,9 +26,29 @@ class BaseRegisterFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required'],
-            'email'=>['required','email','unique:users'],
-            'password'=>['required'],
+            'email' => ['required', 'email:rfc'],
+            'name' => ['required'],
+            'password' => ['required'],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  Validator  $validator
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $user = User::query()
+                ->where('email', $this['email'])
+                ->whereNotNull('github_registered_at')
+                ->first();
+            if ($user !== null)
+            {
+                $validator->errors()->add('email', 'Email has already been registered');
+            }
+        });
     }
 }

@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-
+    <a href="{{route('login')}}">Login</a>
+    <a href="{{route('register')}}">register</a>
     </body>
 </html>
