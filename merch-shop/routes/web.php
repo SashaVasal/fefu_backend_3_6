@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\NewsApiController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PageWebController;
@@ -23,6 +24,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/catalog/{slug?}', [CatalogController::class, 'index'])->name('catalog');
+
 Route::get('/appeal', [AppealController::class, 'form'])->name('appeal.form');
 Route::post('/appeal',[AppealController::class, 'send'])->name('appeal.send');
 
@@ -38,6 +41,7 @@ Route::post('/register',[AuthController::class,'register'])->name('register.post
 Route::get('/login',[AuthController::class,'loginForm'])->name('login');
 Route::post('/login',[AuthController::class,'login'])->name('login.post');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+
 
 
 Route::prefix('/oauth')->group(function () {

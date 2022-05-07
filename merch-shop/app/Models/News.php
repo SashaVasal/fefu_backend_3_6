@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\News
+ *
+ * @method static Builder|News findSimilarSlugs(string $attribute, array $config, string $slug)
+ * @method static Builder|News newModelQuery()
+ * @method static Builder|News newQuery()
+ * @method static Builder|News published()
+ * @method static Builder|News query()
+ * @method static Builder|News withUniqueSlugConstraints(\Illuminate\Database\Eloquent\Model $model, string $attribute, array $config, string $slug)
+ * @mixin \Eloquent
+ */
 class News extends Model
 {
     use HasFactory, Sluggable;

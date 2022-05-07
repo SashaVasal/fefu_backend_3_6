@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
+/**
+ * App\Models\Appeal
+ *
+ * @property-read \App\Models\User|null $user
+ * @method static Builder|Appeal newModelQuery()
+ * @method static Builder|Appeal newQuery()
+ * @method static Builder|Appeal query()
+ * @mixin \Eloquent
+ */
 class Appeal extends Model
 {
     use HasFactory;
