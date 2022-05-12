@@ -4,19 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Page;
 
-class DatabaseSeeder extends Seeder
+class PageSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        $this->call([
-            PageSeeder::class,
-        ]);
+        Page::query()->delete();
+        Page::factory(random_int(20,30))->create();
     }
 }
