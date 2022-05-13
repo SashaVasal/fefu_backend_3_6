@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('news',controller: \App\Http\Controllers\NewsApiController::class)->only([
+Route::apiResource('news',controller: \App\Http\Controllers\Api\NewsApiController::class)->only([
    'index',
    'show'
 ]);
