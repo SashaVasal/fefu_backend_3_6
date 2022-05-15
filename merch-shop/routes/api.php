@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\AppealController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +27,3 @@ Route::apiResource('page',controller: \App\Http\Controllers\Api\PageController::
     'index',
     'show'
 ]);
-
-Route::post('appeal', [AppealController::class, 'send'])->name('appeal.api.send');
