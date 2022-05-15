@@ -22,3 +22,8 @@ Route::apiResource('news',controller: \App\Http\Controllers\Api\NewsApiControlle
    'index',
    'show'
 ]);
+
+Route::apiResource('page',controller: \App\Http\Controllers\Api\PageController::class)->only([
+    'index',
+    'show'
+]);

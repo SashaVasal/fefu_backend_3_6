@@ -82,11 +82,8 @@
                 }
             }
         },
-        "\/news": {
+        "\/api\/page": {
             "get": {
-                "tags": [
-                    "news"
-                ],
                 "summary": "Display a listing of the resource.",
                 "responses": {
                     "200": {
@@ -99,7 +96,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#\/components\/schemas\/News"
+                                                "$ref": "#\/components\/schemas\/Page"
                                             }
                                         },
                                         "links": {
@@ -116,17 +113,13 @@
                 }
             }
         },
-        "\/news\/{slug}": {
+        "\/api\/page\/{page}": {
             "get": {
-                "tags": [
-                    "news"
-                ],
                 "summary": "Display the specified resource.",
                 "parameters": [
                     {
-                        "name": "slug",
+                        "name": "page",
                         "in": "path",
-                        "description": "",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -142,7 +135,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#\/components\/schemas\/News"
+                                            "$ref": "#\/components\/schemas\/Page"
                                         }
                                     }
                                 }
@@ -171,6 +164,24 @@
                         "type": "string"
                     },
                     "published_at": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                }
+            },
+            "Page": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "created_at": {
                         "format": "date-time",
                         "type": "string"
                     }
