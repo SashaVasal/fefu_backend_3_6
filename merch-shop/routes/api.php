@@ -20,8 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('news',controller: \App\Http\Controllers\Api\NewsApiController::class)->only([
-   'index',
-   'show'
+    'index',
+    'show'
 ]);
 
 Route::apiResource('page',controller: \App\Http\Controllers\Api\PageController::class)->only([
