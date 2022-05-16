@@ -150,6 +150,9 @@
         },
         "\/api\/appeal": {
             "post": {
+                "tags": [
+                    "appeal"
+                ],
                 "summary": "Send params to make appeal form.",
                 "parameters": [
                     {
@@ -420,6 +423,21 @@
                     },
                     "total": {
                         "type": "integer"
+                    }
+                }
+            },
+            "ProductCategory": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "nullable": true
                     }
                 }
             }

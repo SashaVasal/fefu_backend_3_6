@@ -20,7 +20,7 @@ class AppealController extends Controller
         $appeal->message = $data['message'];
         $appeal->save();
 
-        return view('appeal',['success'=>session('success',true)]);
+        return redirect(route('appeal.form'))->with(['success' => true]);
     }
 
     public function form()

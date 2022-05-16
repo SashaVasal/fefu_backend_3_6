@@ -26,7 +26,7 @@ class AppealFormRequest extends FormRequest
         return [
             'name' => ['required','string','max:100'],
             'phone' => ['regex:/^(\+?7|8)(( |\()?\d{3}\)?)( |-)?\d{3}( |-)?\d{2}( |-)?\d{2}$/','min:11','max:12','nullable'],
-            'email' => ['string','nullable','email'],
+            'email' => ['string','nullable','email:rfc'],
             'message' => ['required','string','max:1000'],
         ];
     }
