@@ -21,22 +21,22 @@
     </div>
     <div>
         <label>Почта</label>
-        <input type="text" name="phone" value="{{old('phone')}}"/>
-        @error('$phone')
+        <input type="text" name="email" value="{{old('email')}}"/>
+        @error('email')
         <div>{{$message}}</div>
         @enderror
     </div>
     <div>
         <label>Телефон</label>
-        <input type="text" name="email" value="{{old('email')}}"/>
-        @error('$email')
-        <div>{{$message}}</div>
+        <input type="text" name="phone" value="{{old('phone')}}"/>
+        @error('phone')
+        <div>{{$message}}</div>у
         @enderror
     </div>
     <div>
         <label>Message</label>
         <textarea name="message" value="{{old('message')}}"></textarea>
-        @error('$message')
+        @error('message')
         <div>{{$message}}</div>
         @enderror
     </div>

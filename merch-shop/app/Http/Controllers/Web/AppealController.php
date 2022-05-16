@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AppealFormRequest;
 use App\Models\Appeal;
 use App\Sanitizers\PhoneSanitizer;
@@ -14,14 +15,12 @@ class AppealController extends Controller
 
         $appeal = new Appeal();
         $appeal->name = $data['name'];
-        $appeal->phone = $data['phone'] ?? null ? PhoneSanitizer::sanitize($data['phone']) : null;
-        $appeal->email = $data['email'] ?? null;
+        $appeal->phone = PhoneSanitizer::sanitize($data['phone']);
+        $appeal->email = $data['email'];
         $appeal->message = $data['message'];
         $appeal->save();
 
-        return response()->json([
-            'message' => 'Appeal successfully sent'
-        ]);
+        return view('appeal',['success'=>session('success',true)]);
     }
 
     public function form()
