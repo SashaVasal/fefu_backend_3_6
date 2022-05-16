@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AppealController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +31,7 @@ Route::apiResource('page',controller: \App\Http\Controllers\Api\PageController::
 ]);
 
 Route::post('appeal', [AppealController::class, 'send'])->name('appeal.api.send');
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::post('register', [AuthController::class, 'register']);
