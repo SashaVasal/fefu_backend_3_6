@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('news',controller: \App\Http\Controllers\Api\NewsApiController::class)->only([
+   'index',
+   'show'
+]);
+
+Route::apiResource('page',controller: \App\Http\Controllers\Api\PageController::class)->only([
+    'index',
+    'show'
+]);
