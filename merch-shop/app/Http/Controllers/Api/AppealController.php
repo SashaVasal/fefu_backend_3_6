@@ -21,7 +21,7 @@ class AppealController extends Controller
      * @param AppealApiRequest $request
      * @return JsonResponse
      */
-    #[OpenApi\Operation]
+    #[OpenApi\Operation(tags: ['appeal'], method: 'post')]
     #[OpenApi\Response(factory: AppealSuccessResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AppealFailedResponse::class, statusCode: 422)]
     #[OpenApi\Parameters(factory: AppealParameters::class)]
@@ -31,7 +31,7 @@ class AppealController extends Controller
 
         $appeal = new Appeal();
         $appeal->name = $data['name'];
-        $appeal->phone = PhoneSanitizer::sanitize($data['phone']);
+        $appeal->phone = PhoneSanitizer::sanitize($data['phone'] ?? null);
         $appeal->email = $data['email'];
         $appeal->message = $data['message'];
         $appeal->save();

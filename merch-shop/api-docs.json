@@ -150,6 +150,9 @@
         },
         "\/api\/appeal": {
             "post": {
+                "tags": [
+                    "appeal"
+                ],
                 "summary": "Send params to make appeal form.",
                 "parameters": [
                     {
