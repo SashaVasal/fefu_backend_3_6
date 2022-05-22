@@ -206,6 +206,99 @@
                     }
                 }
             }
+        },
+        "\/api\/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login.",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Failed response",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/AppealFailed"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        },
+        "\/api\/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout.",
+                "responses": {
+                    "200": {
+                        "description": "You were not logged in"
+                    }
+                }
+            }
+        },
+        "\/api\/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -216,20 +309,6 @@
                     "errors": {
                         "type": "object",
                         "properties": {
-                            "name": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                },
-                                "nullable": true
-                            },
-                            "phone": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                },
-                                "nullable": true
-                            },
                             "email": {
                                 "type": "array",
                                 "items": {
@@ -237,7 +316,7 @@
                                 },
                                 "nullable": true
                             },
-                            "message": {
+                            "password": {
                                 "type": "array",
                                 "items": {
                                     "type": "string"
