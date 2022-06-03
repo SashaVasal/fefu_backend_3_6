@@ -49,11 +49,16 @@ class AuthController extends Controller
     public function register(BaseRegisterFormRequest $request){
         $data = $request->validated();
 
-        $user = new User();
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
-        $user->save();
+        $user = User::query()
+            ->where('email', $data['email'])
+            ->first();
+
+        if ($user !== null) {
+            $user->updateFromRequest($data);
+        } else {
+            $user = User::createFromRequest($data);
+
+        }
 
         Auth::login($user);
         $request->session()->regenerate();
