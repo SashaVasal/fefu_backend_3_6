@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AppealController;
 use App\Http\Controllers\Web\NewsController;
 use App\Http\Controllers\Web\PageWebController;
+use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,7 @@ Route::prefix('/oauth')->group(function () {
     Route::get('/{provider}/login', [OAuthController::class, 'login'])->name('oauth.login');
 });
 
+Route::get('/catalog/product/{slug}', [ProductController::class, 'index'])->name('product');
 Route::get('/catalog/{slug?}', [CatalogController::class, 'index'])->name('catalog');
 
 Route::get('/news/{slug}', [NewsController::class, 'show']);
