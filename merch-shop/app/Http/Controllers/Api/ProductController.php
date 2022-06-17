@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CatalogFormRequest;
 use App\Http\Resources\ListProductResource;
 use App\Http\Resources\DetailedProductResource;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use App\OpenApi\Parameters\DetailProductParameters;
 use App\OpenApi\Parameters\ListProductParameters;
 use App\OpenApi\Responses\NotFoundResponse;
@@ -14,62 +14,69 @@ use App\OpenApi\Responses\DetailProductResponse;
 use App\OpenApi\Responses\ListProductResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\HigherOrderTapProxy;
 use Throwable;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
 class ProductController extends Controller
 {
+
     /**
      * Display a paginated list of category products.
      *
-     * @param Request $request
-     * @return AnonymousResourceCollection
+     * @param CatalogFormRequest $request
+     * @return ListProductResponse|AnonymousResourceCollection|HigherOrderTapProxy|mixed
      */
     #[OpenApi\Operation(tags: ['product'], method: 'GET')]
     #[OpenApi\Response(factory: ListProductResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
     #[OpenApi\Parameters(factory: ListProductParameters::class)]
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(CatalogFormRequest $request) : mixed
     {
-        $slug = $request->query('category_slug');
-        $categoryQuery = ProductCategory::query()
-            ->with('children', 'products');
+        $requestData = $request->validated();
 
-        if ($slug === null) {
-            $categoryQuery->where('parent_id');
-        } else {
-            $categoryQuery->where('slug', $slug);
-        }
 
-        $categories = $categoryQuery->get();
-        /** @var Product $products */
+        $requestData['slug'] = $requestData['category_slug'] ?? null;
         try {
-            $products = ProductCategory::getTreeProductBuilder($categories)
-                ->orderBy('id')
-                ->paginate();
+            $data = Product::findProducts($requestData);
         } catch (Throwable $e) {
             abort(422, $e->getMessage());
         }
 
-
         return ListProductResource::collection(
-            $products
-        );
+            $data['product_query']->orderBy('products.id')->paginate()->appends([
+                'category_slug' => $data['key_params']['category_slug'],
+                'search_query' => $data['key_params']['search_query'],
+                'filters' => $data['key_params']['filters'],
+                'sort_mode' => $data['key_params']['sort_mode']
+            ])
+        )->additional($data['filters']);
     }
 
-
+    /**
+     * Display the specified product with attributes and description.
+     *
+     * @param Request $request
+     * @return DetailedProductResource
+     */
     #[OpenApi\Operation(tags: ['product'], method: 'GET')]
     #[OpenApi\Response(factory: DetailProductResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
     #[OpenApi\Parameters(factory: DetailProductParameters::class)]
-    public function show($slug): DetailedProductResource
+    public function show($request)
     {
 
+        $slug = $request->query('product_slug');
         $product = Product::query()
             ->with('productCategory', 'sortedAttributeValues.productAttribute')
             ->where('slug', $slug)
             ->first();
+
+        if($product == null){
+            abort(404);
+        }
+
         return new DetailedProductResource(
             $product
         );

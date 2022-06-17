@@ -26,7 +26,6 @@ Route::get('/catalog/product/list', [ProductController::class, 'index']);
 Route::get('/catalog/product/details/{slug}', [ProductController::class, 'show']);
 
 
-
 Route::get('/catalog/', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/catalog/{slug?}', [CatalogController::class, 'show'])->name('list');
 
