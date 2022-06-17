@@ -18,5 +18,63 @@
         </article>
     @endforeach
     {{$products->links()}}
+    <div>
+        <h2>Filters</h2>
+        <form method="get">
+            <div>
+                <label for="search_query">Search</label>
+                <input type="text" name="search_query" id="search_query" value="{{ request('search_query') }}">
+            </div>
+            <div>
+                <label for="sort_mode">Sort mode</label>
+                <select name="sort_mode" id="sort_mode">
+                    <option
+                        value="0" {{ (int)request('sort_mode') === \App\Enums\ProductSortType::PRICE_ASC ? 'selected' : '' }}>
+                        Price asc
+                    </option>
+                    <option
+                        value="1" {{ (int)request('sort_mode') === \App\Enums\ProductSortType::PRICE_DESC ? 'selected' : '' }}>
+                        Price desc
+                    </option>
+                </select>
+                @foreach($filters as $filter)
+                    <div>
+                        <h4>{{ $filter->name }}</h4>
+                        @foreach($filter->options as $option)
+                            <label>
+                                <input type="checkbox" value="{{ $option->value }}" name="filters[{{ $filter->key }}][]"
+                                    {{ $option->isSelected ? 'checked' : '' }}>
+                                {{ $option->value }} ({{ $option->productCount }})
+                            </label>
+                        @endforeach
+                    </div>
+                @endforeach
+                <button>Apply</button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        @foreach($products as $i => $product)
+            <img src="http://picsum.photos/id/{{$i *10}}/100"/>
+            <a href="{{route('product',$product->slug)}}">
+                <h3>{{$product->name}}</h3>
+            </a>
+            <p>{{number_format(round($product->price,2),2,',', ' ')}}$</p>
+        @endforeach
+    </div>
+    <div>
+        @foreach($filters as $filter)
+            <h4>{{$filter->name}}</h4>
+            @foreach($filter->options as $option)
+                <div>
+                    <label>
+                        <input type="checkbox" value="{{$option->value}}" name="filters[{{$filter->key}}][]" {{$option->isSelected ? 'checked': ''}}>
+                        {{$option->value}}
+                    </label>
+                </div>
+            @endforeach
+        @endforeach
+    </div>
 </body>
 </html>
