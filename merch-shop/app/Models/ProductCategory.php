@@ -12,6 +12,33 @@ use Illuminate\Support\Collection;
 
 
 
+/**
+ * App\Models\ProductCategory
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $name
+ * @property string $slug
+ * @property int|null $parent_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|ProductCategory[] $children
+ * @property-read int|null $children_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
+ * @method static \Database\Factories\ProductCategoryFactory factory(...$parameters)
+ * @method static Builder|ProductCategory findSimilarSlugs(string $attribute, array $config, string $slug)
+ * @method static Builder|ProductCategory newModelQuery()
+ * @method static Builder|ProductCategory newQuery()
+ * @method static Builder|ProductCategory query()
+ * @method static Builder|ProductCategory whereCreatedAt($value)
+ * @method static Builder|ProductCategory whereId($value)
+ * @method static Builder|ProductCategory whereName($value)
+ * @method static Builder|ProductCategory whereParentId($value)
+ * @method static Builder|ProductCategory whereSlug($value)
+ * @method static Builder|ProductCategory whereUpdatedAt($value)
+ * @method static Builder|ProductCategory withUniqueSlugConstraints(\Illuminate\Database\Eloquent\Model $model, string $attribute, array $config, string $slug)
+ * @mixin \Eloquent
+ */
 class ProductCategory extends Model
 {
     use HasFactory, Sluggable;

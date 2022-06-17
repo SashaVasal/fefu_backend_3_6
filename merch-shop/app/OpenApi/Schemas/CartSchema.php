@@ -5,25 +5,28 @@ namespace App\OpenApi\Schemas;
 use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\AnyOf;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Not;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\OneOf;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
 use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
-class ListProductSchema extends SchemaFactory  implements Reusable
+class CartSchema extends SchemaFactory implements Reusable
 {
     /**
      * @return AllOf|OneOf|AnyOf|Not|Schema
      */
     public function build(): SchemaContract
     {
-        return Schema::object('ListProduct')
+        return Schema::object('Cart')
             ->properties(
-                Schema::string('name'),
-                Schema::number('price')->format('double'),
-                Schema::string('slug')
+                Schema::array('items')->items(Schema::object()->properties(
+                    ListProductSchema::ref('product'),
+                    Schema::integer('quantity'),
+                    Schema::number('price_item')->format('double'),
+                    Schema::number('price_total')->format('double'),
+                )),
+                Schema::number('price_total')->format('double'),
             );
     }
 }
