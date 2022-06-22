@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AppealController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\NewsController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PageWebController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileController;
@@ -49,6 +50,9 @@ Route::prefix('/oauth')->group(function () {
 });
 
 Route::get('/cart', CartController::class)->middleware('auth:web');
+
+Route::get('/checkout', [OrderController::class, 'show'])->name('checkout.show')->middleware('auth');
+Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.post')->middleware('auth');
 
 Route::get('/catalog/product/{slug}', [ProductController::class, 'index'])->name('product');
 Route::get('/catalog/{slug?}', [CatalogController::class, 'index'])->name('catalog');

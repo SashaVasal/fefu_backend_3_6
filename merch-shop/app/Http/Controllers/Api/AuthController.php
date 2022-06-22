@@ -7,6 +7,7 @@ use App\Http\Requests\BaseLoginFormRequest;
 use App\Http\Requests\BaseRegisterFormRequest;
 use App\Models\User;
 use App\OpenApi\Parameters\RegisterParameters;
+use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Illuminate\Http\JsonResponse;
 use App\OpenApi\Parameters\loginParameters;
 use App\OpenApi\Responses\LoginErrorResponse;
@@ -29,7 +30,7 @@ class AuthController extends Controller
      * @param BaseLoginFormRequest $request
      * @return JsonResponse
      */
-    #[OpenApi\Operation(tags: ['auth'], method: 'POST')]
+    #[OpenApi\Operation(tags: ['auth'], security: BearerTokenSecurityScheme::class, method: 'POST')]
     #[OpenApi\Parameters(factory:loginParameters::class)]
     #[OpenApi\Response(factory:LoginErrorResponse::class,statusCode:422)]
     #[OpenApi\Response(factory:LoginSuccessfullyResponse::class,statusCode:200)]
@@ -52,7 +53,7 @@ class AuthController extends Controller
      * @return JsonResponse
      */
 
-    #[OpenApi\Operation(tags: ['auth'], method: 'POST')]
+    #[OpenApi\Operation(tags: ['auth'], security: BearerTokenSecurityScheme::class, method: 'POST')]
     #[OpenApi\Response(factory: LogoutSuccessfullyResponse::class,statusCode: 200)]
     #[OpenApi\Response(factory: LogoutErrorResponse::class,statusCode: 422)]
     public function logout(Request $request): JsonResponse

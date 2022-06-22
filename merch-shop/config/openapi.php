@@ -24,9 +24,37 @@ return [
             'tags' => [
 
                 [
-                    'name'=>'news',
-                    'description'=>'News',
-                ]
+                    'name' => 'news',
+                    'description' => 'News',
+                ],
+                [
+                    'name' => 'page',
+                    'description' => 'Page'
+                ],
+                [
+                    'name' => 'appeal',
+                    'description' => 'Appeal'
+                ],
+                [
+                    'name' => 'auth',
+                    'description' => 'Auth'
+                ],
+                [
+                    'name' => 'catalog',
+                    'description' => 'Catalog'
+                ],
+                [
+                    'name' => 'product',
+                    'description' => 'Product'
+                ],
+                [
+                    'name' => 'cart',
+                    'description' => 'Cart'
+                ],
+                [
+                    'name' => 'order',
+                    'description' => 'Order'
+                ],
 
             ],
 

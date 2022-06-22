@@ -29,14 +29,18 @@
                 <label for="sort_mode">Sort mode</label>
                 <select name="sort_mode" id="sort_mode">
                     <option
-                        value="0" {{ (int)request('sort_mode') === \App\Enums\ProductSortType::PRICE_ASC ? 'selected' : '' }}>
+                        value="price_asc"
+                        {{ \App\Enums\ProductSortType::keyToValue(request('sort_mode')) === \App\Enums\ProductSortType::PRICE_ASC ? 'selected' : '' }}>
                         Price asc
                     </option>
                     <option
-                        value="1" {{ (int)request('sort_mode') === \App\Enums\ProductSortType::PRICE_DESC ? 'selected' : '' }}>
+                        value="price_desc"
+                        {{\App\Enums\ProductSortType::keyToValue(request('sort_mode')) === \App\Enums\ProductSortType::PRICE_DESC ? 'selected' : '' }}}>
                         Price desc
                     </option>
                 </select>
+            </div>
+            <div>
                 @foreach($filters as $filter)
                     <div>
                         <h4>{{ $filter->name }}</h4>
@@ -49,8 +53,8 @@
                         @endforeach
                     </div>
                 @endforeach
-                <button>Apply</button>
             </div>
+            <button>Submit</button>
         </form>
     </div>
 

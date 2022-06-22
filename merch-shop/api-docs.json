@@ -10,32 +10,109 @@
         }
     ],
     "paths": {
-        "\/api\/cart\/set_quantity": {
+        "\/api\/checkout": {
             "post": {
                 "tags": [
-                    "cart"
+                    "order"
                 ],
-                "summary": "Add products to cart and set quantity",
+                "summary": "Create and return an order",
+                "parameters": [
+                    {
+                        "name": "customer_email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "customer_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "delivery_type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "default": "courier",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_method",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "default": "cash",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Order creation",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "delivery_address": {
+                                        "type": "object",
+                                        "properties": {
+                                            "city": {
+                                                "type": "string"
+                                            },
+                                            "street": {
+                                                "type": "string"
+                                            },
+                                            "house": {
+                                                "type": "string"
+                                            },
+                                            "apartment": {
+                                                "type": "integer",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "nullable": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful response",
                         "content": {
                             "application\/json": {
                                 "schema": {
-                                    "$ref": "#\/components\/schemas\/Cart"
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#\/components\/schemas\/Order"
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
-        "\/api\/cart": {
-            "get": {
+        "\/api\/cart\/set_quantity": {
+            "post": {
                 "tags": [
                     "cart"
                 ],
-                "summary": "Return cart by user or session",
+                "summary": "Add products to cart and set quantity",
                 "requestBody": {
                     "content": {
                         "application\/json": {
@@ -63,9 +140,34 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Cart"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Not found"
-                    },
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
+            }
+        },
+        "\/api\/cart": {
+            "post": {
+                "tags": [
+                    "cart"
+                ],
+                "summary": "Return cart by user or session",
+                "responses": {
                     "200": {
                         "description": "Successful response",
                         "content": {
@@ -76,7 +178,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/catalog\/product\/list": {
@@ -516,7 +623,12 @@
                     "200": {
                         "description": "Successful response"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/logout": {
@@ -529,7 +641,12 @@
                     "200": {
                         "description": "You were not logged in"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/register": {
@@ -685,6 +802,45 @@
                     }
                 }
             },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "customer_name": {
+                        "type": "string"
+                    },
+                    "customer_email": {
+                        "type": "string"
+                    },
+                    "payment_method": {
+                        "type": "string"
+                    },
+                    "delivery_type": {
+                        "type": "string"
+                    },
+                    "": {
+                        "$ref": "#\/components\/schemas\/Cart"
+                    },
+                    "address": {
+                        "type": "object",
+                        "properties": {
+                            "city": {
+                                "type": "string"
+                            },
+                            "street": {
+                                "type": "string"
+                            },
+                            "house": {
+                                "type": "string"
+                            },
+                            "apartment": {
+                                "type": "string",
+                                "nullable": true
+                            }
+                        },
+                        "nullable": true
+                    }
+                }
+            },
             "Page": {
                 "type": "object",
                 "properties": {
@@ -816,12 +972,46 @@
                     }
                 }
             }
+        },
+        "securitySchemes": {
+            "BearerToken": {
+                "type": "http",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [
         {
             "name": "news",
             "description": "News"
+        },
+        {
+            "name": "page",
+            "description": "Page"
+        },
+        {
+            "name": "appeal",
+            "description": "Appeal"
+        },
+        {
+            "name": "auth",
+            "description": "Auth"
+        },
+        {
+            "name": "catalog",
+            "description": "Catalog"
+        },
+        {
+            "name": "product",
+            "description": "Product"
+        },
+        {
+            "name": "cart",
+            "description": "Cart"
+        },
+        {
+            "name": "order",
+            "description": "Order"
         }
     ]
 }
