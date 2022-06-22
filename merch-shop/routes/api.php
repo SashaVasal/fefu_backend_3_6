@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppealController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CatalogController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('checkout', [OrderController::class, 'store'])->middleware('auth:sanctum');
 
 Route::post('/cart/set_quantity', [CartController::class, 'setQuantity'])->name('setQuantity');
 Route::get('/cart/', [CartController::class, 'show']);

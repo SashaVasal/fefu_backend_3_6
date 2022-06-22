@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ProductSortType;
+use App\Filters\ProductFilter;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -78,5 +80,48 @@ class Product extends Model
     public function scopeSearch(Builder $builder, string $searchQuery):Builder
     {
         return $builder->where('product.name','ilike',"%$searchQuery%");
+    }
+
+    public static function findProducts(array $requestData)
+    {
+        $slug = $requestData['slug'] ?? null;
+
+        $categoryQuery = ProductCategory::query()
+            ->with('children', 'products');
+        if ($slug === null) {
+            $categoryQuery->where('parent_id');
+        } else {
+            $categoryQuery->where('slug', $slug);
+        }
+        $categories = $categoryQuery->get();
+        $productQuery = ProductCategory::getTreeProductBuilder($categories);
+        $appliedFilters = $requestData['filters'] ?? [];
+        $filters = ProductFilter::build($productQuery, $appliedFilters);
+        ProductFilter::apply($productQuery, $appliedFilters);
+
+        $searchQuery = $requestData['search_query'] ?? null;
+        if ($searchQuery) {
+            $productQuery->search($searchQuery);
+        }
+        $sortMode = $requestData['sort_mode'] ?? null;
+        if (ProductSortType::keyToValue($sortMode) === ProductSortType::PRICE_ASC) {
+            $productQuery->orderBy('price', 'asc');
+
+        } else if (ProductSortType::keyToValue($sortMode) === ProductSortType::PRICE_DESC) {
+            $productQuery->orderBy('price', 'desc');
+        }
+
+
+        return [
+            'product_query' => $productQuery,
+            'filters' => $filters,
+            'categories' => $categories,
+            'key_params' => [
+                'category_slug' => $slug,
+                'search_query' => $searchQuery,
+                'filters' => $appliedFilters,
+                'sort_mode' => $sortMode
+            ]
+        ];
     }
 }

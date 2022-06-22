@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\OpenApi\RequestBodies\SetQuantityRequestBody;
 use App\OpenApi\Responses\NotFoundResponse;
 use App\OpenApi\Responses\ShowCartResponse;
+use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Auth;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
@@ -21,7 +22,7 @@ class CartController extends Controller
      * @param CartModificationRequest $request
      * @return CartResource
      */
-    #[OpenApi\Operation(tags: ['cart'], method: 'GET')]
+    #[OpenApi\Operation(tags: ['cart'], security: BearerTokenSecurityScheme::class, method: 'POST')]
     #[OpenApi\Response(factory: ShowCartResponse::class, statusCode: 200)]
     public function show(): CartResource
     {
@@ -36,7 +37,7 @@ class CartController extends Controller
      * @param CartModificationRequest $request
      * @return CartResource
      */
-    #[OpenApi\Operation(tags: ['cart'], method: 'POST')]
+    #[OpenApi\Operation(tags: ['cart'], security: BearerTokenSecurityScheme::class, method: 'POST')]
     #[OpenApi\Response(factory: ShowCartResponse::class, statusCode: 200)]
     #[OpenApi\RequestBody(factory: SetQuantityRequestBody::class)]
     #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 422)]
