@@ -71,7 +71,12 @@ class ProductController extends Controller
         $product = Product::query()
             ->with('productCategory', 'sortedAttributeValues.productAttribute')
             ->where('slug', $slug)
-            ->firstOrFail();
+            ->first();
+
+        if($product == null){
+            abort(404);
+        }
+
         return new DetailedProductResource(
             $product
         );
